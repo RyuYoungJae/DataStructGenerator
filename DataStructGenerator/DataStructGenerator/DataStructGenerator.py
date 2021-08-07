@@ -1,18 +1,6 @@
-import openpyxl as xl
-import glob2
+import DataFileRead
 
 path = "../../Data/*.xlsx"
-xlFiles = glob2.glob(path)
 
-for file in xlFiles:
-    wb = xl.load_workbook(file)
-    for sheetName in wb.sheetnames:
-        if sheetName != "Define":
-            continue
-
-        sheet = wb[sheetName]
-        for row in sheet.iter_rows(min_row=1):
-            for cell in row:
-                print("[", cell.value, "]")
-
-    wb.close()
+reader = DataFileRead.DataFileRead();
+result = reader.Read(path)
