@@ -1,5 +1,6 @@
 import openpyxl as xl
 import glob2
+import Util
 
 class DataFileRead(object):
     def Read(self, path):
@@ -11,13 +12,21 @@ class DataFileRead(object):
                 if sheetName != "Define":
                     continue
 
-                cells = []
+                factors = {}
                 sheet = wb[sheetName]
                 for row in sheet.iter_rows(min_row=1):
+                    variable = []
                     for cell in row:
-                        cells.append(cell.value)
-                
-                result[sheetName] = cells
+                        if cell.value == "Column" or cell.value == "" : 
+                            break
+                        variable.append(cell.value)
+                    if len(variable) < 2 or len(variable) > 2:
+                        continue
+                    factors[variable[0]] = variable[1]
+
+                util = Util.Util()
+                fileName = util.GetFileName(file)
+                result[fileName[0]] = factors
             wb.close()
         return result
 
